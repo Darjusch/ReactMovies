@@ -71,6 +71,7 @@ export default function App() {
   function handleCloseMovie() {
     setSelectedId(null);
   }
+
   // EXAMPLE: http://www.omdbapi.com/?apikey=ade3e1b2&s=inception
 
   // if we want to use async functionality in a useEffect we need to wrap it in a async function and call it with out awaiting the result
@@ -122,6 +123,7 @@ export default function App() {
               selectedId={selectedId}
               onAddWatched={handleAddWatched}
               onCloseMovie={handleCloseMovie}
+              watched={watched}
             />
           ) : (
             <>

@@ -1,3 +1,5 @@
+// TODO there should be a button do delete the movie
+
 export function WatchedMovie({ movie }) {
   return (
     <li key={movie.imdbID}>

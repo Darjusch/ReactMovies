@@ -3,9 +3,12 @@ import { useState } from "react";
 import { Loading } from "../App";
 import StarRating from "./StarRating";
 
-// TODO if movie is already rated show the rating
-// we could then just update the rating if it changes but dont add another entry to the list
-export function MovieDetails({ selectedId, onAddWatched, onCloseMovie }) {
+export function MovieDetails({
+  selectedId,
+  onAddWatched,
+  onCloseMovie,
+  watched,
+}) {
   const [movie, setMovie] = useState({});
   const [isLoading, setLoading] = useState(false);
   const [rating, setRating] = useState(0);
@@ -23,6 +26,10 @@ export function MovieDetails({ selectedId, onAddWatched, onCloseMovie }) {
     onAddWatched(newWatchedMovie);
     onCloseMovie();
   }
+  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+  const watchedUserRating = watched.find(
+    (movie) => movie.imdbID === selectedId
+  )?.userRating;
 
   useEffect(() => {
     async function fetchMovie() {
@@ -66,11 +73,23 @@ export function MovieDetails({ selectedId, onAddWatched, onCloseMovie }) {
           </header>
           <section>
             <div className="rating">
-              <StarRating maxRating={10} size="24" onSetRating={setRating} />
-              {rating > 0 && (
-                <button className="btn-add" onClick={handleAdd}>
-                  + Add to list
-                </button>
+              {!isWatched ? (
+                <>
+                  <StarRating
+                    maxRating={10}
+                    size="24"
+                    onSetRating={setRating}
+                  />
+                  {rating > 0 && (
+                    <button className="btn-add" onClick={handleAdd}>
+                      + Add to list
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>
+                  You rated with movie {watchedUserRating} <span>⭐️</span>
+                </p>
               )}
             </div>
             <p>{movie.Plot}</p>
